@@ -1,6 +1,6 @@
 # Slime World Manager [![Build Status](https://travis-ci.org/Paul19988/Advanced-Slime-World-Manager.svg?branch=feature%2F1.16)](https://travis-ci.org/Paul19988/Advanced-Slime-World-Manager)
 
-[<img src="https://discordapp.com/assets/e4923594e694a21542a489471ecffa50.svg" alt="" height="55" />](https://discord.gg/P9Pd58d)
+[<img src="https://discordapp.com/assets/e4923594e694a21542a489471ecffa50.svg" alt="" height="55" />](https://discord.gg/YevvsMa)
 
 Slime World Manager is a Minecraft plugin that implements the Slime Region Format, developed by the Hypixel Dev Team.
  Its goal is to provide server administrators with an easy-to-use tool to load worlds faster and save space.
@@ -15,8 +15,8 @@ SWM releases can be found [here](https://www.spigotmc.org/resources/slimeworldma
 ```
 <repositories>
   <repository>
-    <id>glaremasters</id>
-    <url>https://repo.glaremasters.me/repository/concuncan/</url>
+    <id>rapture.pw</id>
+    <url>TO-BE-ADDED</url>
   </repository>
 </repositories>
 ```
@@ -63,6 +63,7 @@ Javadocs can be found [here](https://grinderwolf.github.io/Slime-World-Manager/a
     * [Migrating a world](.docs/api/migrate-world.md)
     * [Importing a world](.docs/api/import-world.md)
     * [Using other data sources](.docs/api/use-data-source.md)
+    * [Custom build preparation](.docs/api/custom-build-preparation.md)
  * [FAQ](.docs/faq.md)
 
 ## Credits

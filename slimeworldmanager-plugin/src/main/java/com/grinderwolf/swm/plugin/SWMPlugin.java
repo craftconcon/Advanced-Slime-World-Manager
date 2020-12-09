@@ -11,6 +11,8 @@ import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import com.grinderwolf.swm.nms.CraftSlimeWorld;
 import com.grinderwolf.swm.nms.SlimeNMS;
 import com.grinderwolf.swm.nms.v1_16_R1.v1_16_R1SlimeNMS;
+import com.grinderwolf.swm.nms.v1_16_R2.v1_16_R2SlimeNMS;
+import com.grinderwolf.swm.nms.v1_16_R3.v1_16_R3SlimeNMS;
 import com.grinderwolf.swm.plugin.commands.CommandManager;
 import com.grinderwolf.swm.plugin.config.*;
 import com.grinderwolf.swm.plugin.loaders.LoaderUtils;
@@ -45,7 +47,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
     @Override
     public void onLoad() {
         instance = this;
-
+        Logging.info("onLoad");
         try {
             ConfigManager.initialize();
         } catch (NullPointerException | IOException | ObjectMappingException ex) {
@@ -56,7 +58,11 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
 
         LoaderUtils.registerLoaders();
 
-        nms = getNMSBridge();
+        try {
+            nms = getNMSBridge();
+        } catch(InvalidVersionException e) {
+            e.printStackTrace();
+        }
 
         List<String> erroredWorlds = loadWorlds();
 
@@ -129,6 +135,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
         }
 
         for (SlimeWorld world : worlds) {
+            Logging.info("onEnable generating world: " + world.getName());
             if (Bukkit.getWorld(world.getName()) == null) {
                 generateWorld(world);
             }
@@ -137,15 +144,28 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
         worlds.clear();
     }
 
-    private SlimeNMS getNMSBridge() {
-        return new v1_16_R1SlimeNMS();
+    private SlimeNMS getNMSBridge() throws InvalidVersionException {
+        String version = Bukkit.getServer().getClass().getPackage().getName();
+        String nmsVersion = version.substring(version.lastIndexOf('.') + 1);
+        switch(nmsVersion) {
+            case "v1_16_R1":
+                return new v1_16_R1SlimeNMS();
+            case "v1_16_R2":
+                return new v1_16_R2SlimeNMS();
+            case "v1_16_R3":
+                return new v1_16_R3SlimeNMS();
+            default:
+                throw new InvalidVersionException(nmsVersion);
+        }
     }
 
     private List<String> loadWorlds() {
+        Logging.info("loadWorlds");
         List<String> erroredWorlds = new ArrayList<>();
         WorldsConfig config = ConfigManager.getWorldConfig();
 
         for (Map.Entry<String, WorldData> entry : config.getWorlds().entrySet()) {
+            Logging.info("Entry: " + entry.getKey());
             String worldName = entry.getKey();
             WorldData worldData = entry.getValue();
 

@@ -2,12 +2,14 @@ package com.grinderwolf.swm.nms.v1_16_R1;
 
 import com.grinderwolf.swm.clsm.CLSMBridge;
 import com.grinderwolf.swm.clsm.ClassModifier;
+import net.minecraft.server.v1_16_R1.Chunk;
+import net.minecraft.server.v1_16_R1.IChunkAccess;
+import net.minecraft.server.v1_16_R1.ProtoChunkExtension;
+import net.minecraft.server.v1_16_R1.WorldServer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_16_R1.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.Bukkit;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CraftCLSMBridge implements CLSMBridge {
@@ -60,11 +62,13 @@ public class CraftCLSMBridge implements CLSMBridge {
         WorldServer defaultWorld = nmsInstance.getDefaultWorld();
         WorldServer netherWorld = nmsInstance.getDefaultNetherWorld();
         WorldServer endWorld = nmsInstance.getDefaultEndWorld();
-
+        LOGGER.info("getDefaultWorlds");
         if (defaultWorld != null || netherWorld != null || endWorld != null) {
+            LOGGER.info("not null, returning: " + defaultWorld + ", " + netherWorld + ", " + endWorld);
             return new WorldServer[] { defaultWorld, netherWorld, endWorld };
         }
 
+        LOGGER.info("Returning null as there are no default worlds");
         // Returning null will just run the original load world method
         return null;
     }
