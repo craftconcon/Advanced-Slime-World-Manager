@@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
     private static final File UNIVERSE_DIR;
     public static Convertable CONVERTABLE;
     private static boolean isPaperMC;
+    private Plugin plugin;
 
     static {
         Path path;
@@ -73,9 +75,10 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
     private CustomWorldServer defaultNetherWorld;
     private CustomWorldServer defaultEndWorld;
 
-    public v1_16_R3SlimeNMS(boolean isPaper) {
+    public v1_16_R3SlimeNMS(boolean isPaper, Plugin swm) {
         try {
             isPaperMC = isPaper;
+            plugin = swm;
             CraftCLSMBridge.initialize(this);
         } catch (NoClassDefFoundError ex) {
             LOGGER.error("Failed to find ClassModifier classes. Are you sure you installed it correctly?");
@@ -197,6 +200,21 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
 
         Bukkit.getPluginManager().callEvent(new WorldInitEvent(server.getWorld()));
 
+        if (worldserver.getWorld().getKeepSpawnInMemory()) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                LOGGER.info("Preparing start region for dimension {}", worldserver.getDimensionKey().a());
+
+                BlockPosition blockposition = worldserver.getSpawn();
+                ChunkProviderServer chunkproviderserver = worldserver.getChunkProvider();
+                worldloadlistener.a(new ChunkCoordIntPair(blockposition));
+                chunkproviderserver.getLightEngine().a(500);
+                server.getWorld().getChunkAtAsync(0,0, true);
+                worldloadlistener.b();
+                chunkproviderserver.getLightEngine().a(5);
+            });
+            //            chunkproviderserver.addTicket(SWM_TICKET, new ChunkCoordIntPair(blockposition), 33, Unit.INSTANCE);
+        }
+
 //        if(isPaperMC) {
 //            LOGGER.info("Loading with paper optimizations");
 //
@@ -229,7 +247,7 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
 //        } else {
 //            LOGGER.info("Loading with legacy fallback");
 
-            mcServer.loadSpawn(server.getChunkProvider().playerChunkMap.worldLoadListener, server);
+//            mcServer.loadSpawn(server.getChunkProvider().playerChunkMap.worldLoadListener, server);
 //        }
 
         Bukkit.getPluginManager().callEvent(new WorldLoadEvent(server.getWorld()));

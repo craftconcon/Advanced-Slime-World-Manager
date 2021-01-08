@@ -170,7 +170,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
             case "v1_16_R2":
                 return new v1_16_R2SlimeNMS(isPaperMC);
             case "v1_16_R3":
-                return new v1_16_R3SlimeNMS(isPaperMC);
+                return new v1_16_R3SlimeNMS(isPaperMC, this);
             default:
                 throw new InvalidVersionException(nmsVersion);
         }

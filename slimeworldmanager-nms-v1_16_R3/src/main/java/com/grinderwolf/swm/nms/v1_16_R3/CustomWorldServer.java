@@ -48,7 +48,7 @@ public class CustomWorldServer extends WorldServer {
                              org.bukkit.World.Environment environment) throws IOException {
         super(MinecraftServer.getServer(), MinecraftServer.getServer().executorService,
                 v1_16_R3SlimeNMS.CONVERTABLE.c(world.getName(), dimensionKey),
-                worldData, worldKey, dimensionManager, MinecraftServer.getServer().worldLoadListenerFactory.create(11),
+                worldData, worldKey, dimensionManager, MinecraftServer.getServer().worldLoadListenerFactory.create(33),
                 chunkGenerator, false, 0, new ArrayList<>(), true, environment, null);
 
         this.slimeWorld = world;
@@ -184,7 +184,7 @@ public class CustomWorldServer extends WorldServer {
             SlimeChunkSection slimeSection = chunk.getSections()[sectionId];
 
             if (slimeSection != null) {
-                ChunkSection section = new ChunkSection(sectionId << 4);
+                ChunkSection section = new ChunkSection(sectionId << 1);
 
                 LOGGER.debug("ChunkSection #" + sectionId + " - Chunk (" + pos.x + ", " + pos.z + ") - World " + slimeWorld.getName() + ":");
                 LOGGER.debug("Block palette:");
@@ -214,7 +214,7 @@ public class CustomWorldServer extends WorldServer {
         // Keep the chunk loaded at level 33 to avoid light glitches
         // Such a high level will let the server not tick the chunk,
         // but at the same time it won't be completely unloaded from memory
-        getChunkProvider().addTicket(SWM_TICKET, pos, 33, Unit.INSTANCE);
+//        getChunkProvider().addTicket(SWM_TICKET, pos, 33, Unit.INSTANCE);
 
         Consumer<Chunk> loadEntities = (nmsChunk) -> {
 

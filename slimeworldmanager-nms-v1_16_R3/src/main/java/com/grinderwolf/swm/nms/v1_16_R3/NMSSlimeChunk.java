@@ -25,6 +25,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.server.v1_16_R3.WorldDataServer;
+import org.bukkit.Bukkit;
 
 @Data
 @AllArgsConstructor
@@ -50,6 +51,7 @@ public class NMSSlimeChunk implements SlimeChunk {
     @Override
     public SlimeChunkSection[] getSections() {
         SlimeChunkSection[] sections = new SlimeChunkSection[16];
+        System.out.println("GETTING SECTIONS: " + sections.length);
         LightEngine lightEngine = chunk.world.getChunkProvider().getLightEngine();
 
         for (int sectionId = 0; sectionId < chunk.getSections().length; sectionId++) {
