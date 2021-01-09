@@ -51,7 +51,6 @@ public class NMSSlimeChunk implements SlimeChunk {
     @Override
     public SlimeChunkSection[] getSections() {
         SlimeChunkSection[] sections = new SlimeChunkSection[16];
-        System.out.println("GETTING SECTIONS: " + sections.length);
         LightEngine lightEngine = chunk.world.getChunkProvider().getLightEngine();
 
         for (int sectionId = 0; sectionId < chunk.getSections().length; sectionId++) {

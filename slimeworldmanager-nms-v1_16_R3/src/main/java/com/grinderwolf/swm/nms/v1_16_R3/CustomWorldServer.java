@@ -185,6 +185,7 @@ public class CustomWorldServer extends WorldServer {
 
             if (slimeSection != null) {
                 ChunkSection section = new ChunkSection(sectionId << 1);
+                System.out.println("SECTION: " + section.toString());
 
                 LOGGER.debug("ChunkSection #" + sectionId + " - Chunk (" + pos.x + ", " + pos.z + ") - World " + slimeWorld.getName() + ":");
                 LOGGER.debug("Block palette:");
@@ -208,6 +209,8 @@ public class CustomWorldServer extends WorldServer {
 
                 section.recalcBlockCounts();
                 sections[sectionId] = section;
+            }else{
+                System.out.println("SLIMESECTION NULL");
             }
         }
 

@@ -42,7 +42,9 @@ public class SlimeProperties {
 
     public static final SlimeProperty DEFAULT_BIOME = new SlimeProperty("defaultBiome", PropertyType.STRING, "minecraft:plains");
 
+    public static final SlimeProperty PAPER_LOAD = new SlimeProperty("paperLoad", PropertyType.BOOLEAN, true);
+
     public static final SlimeProperty[] VALUES = { SPAWN_X, SPAWN_Y, SPAWN_Z,
         DIFFICULTY, ALLOW_MONSTERS, ALLOW_ANIMALS, DRAGON_BATTLE, PVP, ENVIRONMENT,
-        WORLD_TYPE, DEFAULT_BIOME };
+        WORLD_TYPE, DEFAULT_BIOME, PAPER_LOAD };
 }

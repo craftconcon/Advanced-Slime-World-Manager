@@ -126,6 +126,8 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
         }
     }
 
+    private static final TicketType<Unit> SWM_TICKET = TicketType.a("swm-chunk", (a, b) -> 0);
+
     @Override
     public void generateWorld(SlimeWorld world) {
         String worldName = world.getName();
@@ -201,18 +203,24 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
         Bukkit.getPluginManager().callEvent(new WorldInitEvent(server.getWorld()));
 
         if (worldserver.getWorld().getKeepSpawnInMemory()) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                LOGGER.info("Preparing start region for dimension {}", worldserver.getDimensionKey().a());
+            LOGGER.info("Preparing start region for dimension {}", worldserver.getDimensionKey().a());
 
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 BlockPosition blockposition = worldserver.getSpawn();
-                ChunkProviderServer chunkproviderserver = worldserver.getChunkProvider();
-                worldloadlistener.a(new ChunkCoordIntPair(blockposition));
-                chunkproviderserver.getLightEngine().a(500);
-                server.getWorld().getChunkAtAsync(0,0, true);
-                worldloadlistener.b();
-                chunkproviderserver.getLightEngine().a(5);
+//                ChunkProviderServer chunkproviderserver = worldserver.getChunkProvider();
+//                worldloadlistener.a(new ChunkCoordIntPair(blockposition));
+//                chunkproviderserver.getLightEngine().a(500);
+//                server.getWorld().getChunkAtAsync(blockposition.getX(), blockposition.getZ(), true).whenCompleteAsync((either, ex) -> {
+//                    worldloadlistener.b();
+//                    chunkproviderserver.getLightEngine().a(5);
+//                    chunkproviderserver.addTicket(SWM_TICKET, new ChunkCoordIntPair(blockposition), 33, Unit.INSTANCE);
+//                });
+//                server.getWorld().setChunkForceLoaded(blockposition.getX(), blockposition.getZ(), true);
+                server.getWorld().getHandle().getChunkProvider().getLightEngine().a(blockposition);
+                server.getWorld().getHandle().getChunkProvider().getLightEngine().queueUpdate();
             });
-            //            chunkproviderserver.addTicket(SWM_TICKET, new ChunkCoordIntPair(blockposition), 33, Unit.INSTANCE);
+            mcServer.loadSpawn(server.getChunkProvider().playerChunkMap.worldLoadListener, server);
         }
 
 //        if(isPaperMC) {
@@ -246,8 +254,6 @@ public class v1_16_R3SlimeNMS implements SlimeNMS {
 //            }
 //        } else {
 //            LOGGER.info("Loading with legacy fallback");
-
-//            mcServer.loadSpawn(server.getChunkProvider().playerChunkMap.worldLoadListener, server);
 //        }
 
         Bukkit.getPluginManager().callEvent(new WorldLoadEvent(server.getWorld()));

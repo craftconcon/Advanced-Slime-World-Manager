@@ -39,6 +39,9 @@ public class WorldData {
     @Setting("defaultBiome")
     private String defaultBiome = "minecraft:plains";
 
+    @Setting("paperLoad")
+    private boolean paperLoad = false;
+
     @Setting("loadOnStartup")
     private boolean loadOnStartup = true;
     @Setting("readOnly")
@@ -95,6 +98,7 @@ public class WorldData {
         propertyMap.setString(SlimeProperties.ENVIRONMENT, environment);
         propertyMap.setString(SlimeProperties.WORLD_TYPE, worldType);
         propertyMap.setString(SlimeProperties.DEFAULT_BIOME, defaultBiome);
+        propertyMap.setBoolean(SlimeProperties.PAPER_LOAD, paperLoad);
 
         return propertyMap;
     }
