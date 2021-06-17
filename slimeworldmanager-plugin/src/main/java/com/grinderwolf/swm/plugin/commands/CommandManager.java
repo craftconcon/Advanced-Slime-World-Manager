@@ -35,7 +35,7 @@ public class CommandManager implements TabExecutor {
         commands.put("migrate", new MigrateWorldCmd(plugin));
         commands.put("delete", new DeleteWorldCmd(plugin));
         commands.put("import", new ImportWorldCmd());
-        commands.put("reload", new ReloadConfigCmd());
+        commands.put("reload", new ReloadConfigCmd(plugin));
         commands.put("create", new CreateWorldCmd(plugin));
     }
 
