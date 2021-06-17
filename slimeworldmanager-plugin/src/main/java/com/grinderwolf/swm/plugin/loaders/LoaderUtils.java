@@ -20,7 +20,6 @@ import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import com.grinderwolf.swm.nms.CraftSlimeChunk;
 import com.grinderwolf.swm.nms.CraftSlimeChunkSection;
 import com.grinderwolf.swm.nms.CraftSlimeWorld;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
 import com.grinderwolf.swm.plugin.config.DatasourcesConfig;
 import com.grinderwolf.swm.plugin.loaders.file.FileLoader;
 import com.grinderwolf.swm.plugin.loaders.mongo.MongoLoader;
@@ -48,39 +47,32 @@ public class LoaderUtils {
     private static final Map<String, SlimeLoader> loaderMap = new HashMap<>();
 
     public static void registerLoaders() {
-        DatasourcesConfig config = ConfigManager.getDatasourcesConfig();
 
         // File loader
-        DatasourcesConfig.FileConfig fileConfig = config.getFileConfig();
-        registerLoader("file", new FileLoader(new File(fileConfig.getPath())));
+        registerLoader("file", new FileLoader(new File(DatasourcesConfig.FileConfig.path)));
 
         // Mysql loader
-        DatasourcesConfig.MysqlConfig mysqlConfig = config.getMysqlConfig();
-        if (mysqlConfig.isEnabled()) {
+        if (DatasourcesConfig.MysqlConfig.enabled) {
             try {
-                registerLoader("mysql", new MysqlLoader(mysqlConfig));
+                registerLoader("mysql", new MysqlLoader());
             } catch (SQLException ex) {
                 Logging.error("Failed to establish connection to the MySQL server:");
                 ex.printStackTrace();
             }
         }
 
-        // MongoDB loader
-        DatasourcesConfig.MongoDBConfig mongoConfig = config.getMongoDbConfig();
-
-        if (mongoConfig.isEnabled()) {
+        if (DatasourcesConfig.MongoDBConfig.enabled) {
             try {
-                registerLoader("mongodb", new MongoLoader(mongoConfig));
+                registerLoader("mongodb", new MongoLoader());
             } catch (MongoException ex) {
                 Logging.error("Failed to establish connection to the MongoDB server:");
                 ex.printStackTrace();
             }
         }
 
-        DatasourcesConfig.RedisConfig redisConfig = config.getRedisConfig();
-        if(redisConfig.isEnabled()){
+        if(DatasourcesConfig.RedisConfig.enabled){
           try{
-            registerLoader("redis", new RedisLoader(redisConfig));
+            registerLoader("redis", new RedisLoader());
           }catch (RedisException ex){
             Logging.error("Failed to establish connection to the Redis server:");
             ex.printStackTrace();

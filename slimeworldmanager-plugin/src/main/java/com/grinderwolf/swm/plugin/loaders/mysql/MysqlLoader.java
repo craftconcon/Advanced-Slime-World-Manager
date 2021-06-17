@@ -53,19 +53,19 @@ public class MysqlLoader extends UpdatableLoader {
     private final Map<String, ScheduledFuture> lockedWorlds = new HashMap<>();
     private final HikariDataSource source;
 
-    public MysqlLoader(DatasourcesConfig.MysqlConfig config) throws SQLException {
+    public MysqlLoader() throws SQLException {
         HikariConfig hikariConfig = new HikariConfig();
 
-        String sqlUrl = config.getSqlUrl();
-        sqlUrl = sqlUrl.replace("{host}", config.getHost());
-        sqlUrl = sqlUrl.replace("{port}", String.valueOf(config.getPort()));
-        sqlUrl = sqlUrl.replace("{database}", config.getDatabase());
-        sqlUrl = sqlUrl.replace("{usessl}", String.valueOf(config.isUsessl()));
+        String sqlUrl = DatasourcesConfig.MysqlConfig.sqlUrl;
+        sqlUrl = sqlUrl.replace("{host}", DatasourcesConfig.MysqlConfig.host);
+        sqlUrl = sqlUrl.replace("{port}", String.valueOf(DatasourcesConfig.MysqlConfig.port));
+        sqlUrl = sqlUrl.replace("{database}", DatasourcesConfig.MysqlConfig.database);
+        sqlUrl = sqlUrl.replace("{usessl}", String.valueOf(DatasourcesConfig.MysqlConfig.usessl));
 
         hikariConfig.setJdbcUrl(sqlUrl);
 //        hikariConfig.setJdbcUrl("jdbc:mysql://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase() + "?autoReconnect=true&allowMultiQueries=true&useSSL=" + config.isUsessl());
-        hikariConfig.setUsername(config.getUsername());
-        hikariConfig.setPassword(config.getPassword());
+        hikariConfig.setUsername(DatasourcesConfig.MysqlConfig.username);
+        hikariConfig.setPassword(DatasourcesConfig.MysqlConfig.password);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");

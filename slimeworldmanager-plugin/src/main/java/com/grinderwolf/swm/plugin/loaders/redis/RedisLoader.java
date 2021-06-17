@@ -17,9 +17,9 @@ public class RedisLoader implements SlimeLoader {
     private static final byte TRUE = 0x1;
     private static final byte FALSE = 0x0;
 
-    public RedisLoader(DatasourcesConfig.RedisConfig config) {
+    public RedisLoader() {
         this.connection = RedisClient
-            .create(config.getUri())
+            .create(DatasourcesConfig.RedisConfig.uri)
             .connect(StringByteCodec.INSTANCE)
             .sync();
     }

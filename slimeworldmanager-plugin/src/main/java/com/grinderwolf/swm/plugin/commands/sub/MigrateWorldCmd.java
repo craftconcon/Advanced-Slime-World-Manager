@@ -6,7 +6,6 @@ import com.grinderwolf.swm.api.exceptions.WorldInUseException;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.plugin.SWMPlugin;
 import com.grinderwolf.swm.plugin.commands.CommandManager;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
 import com.grinderwolf.swm.plugin.config.WorldData;
 import com.grinderwolf.swm.plugin.config.WorldsConfig;
 import com.grinderwolf.swm.plugin.loaders.LoaderUtils;
@@ -17,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -26,6 +26,12 @@ import java.util.List;
 @Getter
 public class MigrateWorldCmd implements Subcommand {
 
+    private final Plugin plugin;
+
+    public MigrateWorldCmd(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
     private final String usage = "migrate <world> <new-data-source>";
     private final String description = "Migrate a world from one data source to another.";
     private final String permission = "swm.migrate";
@@ -34,8 +40,7 @@ public class MigrateWorldCmd implements Subcommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length > 1) {
             String worldName = args[0];
-            WorldsConfig config = ConfigManager.getWorldConfig();
-            WorldData worldData = config.getWorlds().get(worldName);
+            WorldData worldData = WorldsConfig.worlds.get(worldName);
 
             if (worldData == null) {
                 sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.RED + "Unknown world " + worldName + "! Are you sure you configured it correctly?");
@@ -83,7 +88,7 @@ public class MigrateWorldCmd implements Subcommand {
                     SWMPlugin.getInstance().migrateWorld(worldName, oldLoader, newLoader);
 
                     worldData.setDataSource(newSource);
-                    config.save();
+                    WorldsConfig.loadConfig(this.plugin);
 
                     sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.GREEN + "World " + ChatColor.YELLOW + worldName + ChatColor.GREEN + " migrated in "
                             + (System.currentTimeMillis() - start) + "ms!");

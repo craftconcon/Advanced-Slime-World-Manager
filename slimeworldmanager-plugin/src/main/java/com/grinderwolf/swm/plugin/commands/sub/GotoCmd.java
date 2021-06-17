@@ -1,7 +1,7 @@
 package com.grinderwolf.swm.plugin.commands.sub;
 
 import com.grinderwolf.swm.plugin.SWMPlugin;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
+import com.grinderwolf.swm.plugin.config.WorldsConfig;
 import com.grinderwolf.swm.plugin.log.Logging;
 import lombok.Getter;
 import org.bukkit.*;
@@ -56,8 +56,8 @@ public class GotoCmd implements Subcommand {
                     ? "yourself" : ChatColor.YELLOW + target.getName() + ChatColor.GRAY) + " to " + ChatColor.AQUA + world.getName() + ChatColor.GRAY + "...");
 
             Location spawnLocation;
-            if(ConfigManager.getWorldConfig().getWorlds().containsKey(world.getName())) {
-                String spawn = ConfigManager.getWorldConfig().getWorlds().get(world.getName()).getSpawn();
+            if(WorldsConfig.worlds.containsKey(world.getName())) {
+                String spawn = WorldsConfig.worlds.get(world.getName()).getSpawn();
                 String[] coords = spawn.split(", ");
                 double x = Double.parseDouble(coords[0]);
                 double y = Double.parseDouble(coords[1]);

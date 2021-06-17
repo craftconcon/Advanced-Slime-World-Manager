@@ -48,13 +48,17 @@ public class MongoLoader extends UpdatableLoader {
     private final String database;
     private final String collection;
 
-    public MongoLoader(DatasourcesConfig.MongoDBConfig config) throws MongoException {
-        this.database = config.getDatabase();
-        this.collection = config.getCollection();
+    public MongoLoader() throws MongoException {
+        this.database = DatasourcesConfig.MongoDBConfig.database;
+        this.collection = DatasourcesConfig.MongoDBConfig.collection;
 
-        String authParams = !config.getUsername().isEmpty() && !config.getPassword().isEmpty() ? config.getUsername() + ":" + config.getPassword() + "@" : "";
-        String authSource = !config.getAuthSource().isEmpty() ? "/?authSource=" + config.getAuthSource() : "";
-        String uri = !config.getUri().isEmpty() ? config.getUri() : "mongodb://" + authParams + config.getHost() + ":" + config.getPort() + authSource;
+        String authParams = !DatasourcesConfig.MongoDBConfig.username.isEmpty() && !DatasourcesConfig.MongoDBConfig.password.isEmpty()
+          ? DatasourcesConfig.MongoDBConfig.username + ":" + DatasourcesConfig.MongoDBConfig.password + "@"
+          : "";
+        String authSource = !DatasourcesConfig.MongoDBConfig.authSource.isEmpty() ? "/?authSource=" + DatasourcesConfig.MongoDBConfig.authSource : "";
+        String uri = !DatasourcesConfig.MongoDBConfig.uri.isEmpty()
+          ? DatasourcesConfig.MongoDBConfig.uri
+          : "mongodb://" + authParams + DatasourcesConfig.MongoDBConfig.host + ":" + DatasourcesConfig.MongoDBConfig.port + authSource;
 
         this.client = MongoClients.create(uri);
 

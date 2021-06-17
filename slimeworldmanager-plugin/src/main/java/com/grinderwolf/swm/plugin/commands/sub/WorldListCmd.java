@@ -1,7 +1,7 @@
 package com.grinderwolf.swm.plugin.commands.sub;
 
 import com.grinderwolf.swm.plugin.SWMPlugin;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
+import com.grinderwolf.swm.plugin.config.WorldsConfig;
 import com.grinderwolf.swm.plugin.log.Logging;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -53,7 +53,7 @@ public class WorldListCmd implements Subcommand {
         }
 
         List<String> worldsList = new ArrayList<>(loadedWorlds.keySet());
-        ConfigManager.getWorldConfig().getWorlds().keySet().stream().filter((world) -> !worldsList.contains(world)).forEach(worldsList::add);
+        WorldsConfig.worlds.keySet().stream().filter((world) -> !worldsList.contains(world)).forEach(worldsList::add);
 
         if (worldsList.isEmpty()) {
             sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.RED + "There are no worlds configured.");

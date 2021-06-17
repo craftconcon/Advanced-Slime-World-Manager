@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
@@ -19,7 +20,7 @@ public class CommandManager implements TabExecutor {
     @Getter
     private final Set<String> worldsInUse = new HashSet<>();
 
-    public CommandManager() {
+    public CommandManager(Plugin plugin) {
         instance = this;
 
         commands.put("help", new HelpCmd());
@@ -31,8 +32,8 @@ public class CommandManager implements TabExecutor {
         commands.put("unload", new UnloadWorldCmd());
         commands.put("list", new WorldListCmd());
         commands.put("dslist", new DSListCmd());
-        commands.put("migrate", new MigrateWorldCmd());
-        commands.put("delete", new DeleteWorldCmd());
+        commands.put("migrate", new MigrateWorldCmd(plugin));
+        commands.put("delete", new DeleteWorldCmd(plugin));
         commands.put("import", new ImportWorldCmd());
         commands.put("reload", new ReloadConfigCmd());
         commands.put("create", new CreateWorldCmd());

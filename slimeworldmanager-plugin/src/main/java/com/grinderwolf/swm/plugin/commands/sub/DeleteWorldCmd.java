@@ -6,7 +6,6 @@ import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.plugin.SWMPlugin;
 import com.grinderwolf.swm.plugin.commands.CommandManager;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
 import com.grinderwolf.swm.plugin.config.WorldData;
 import com.grinderwolf.swm.plugin.config.WorldsConfig;
 import com.grinderwolf.swm.plugin.loaders.LoaderUtils;
@@ -17,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -27,6 +27,12 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 public class DeleteWorldCmd implements Subcommand {
+
+    private final Plugin plugin;
+
+    public DeleteWorldCmd(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     private final String usage = "delete <world> [data-source]";
     private final String description = "Delete a world.";
@@ -52,8 +58,7 @@ public class DeleteWorldCmd implements Subcommand {
             if (args.length > 1) {
                 source = args[1];
             } else {
-                WorldsConfig config = ConfigManager.getWorldConfig();
-                WorldData worldData = config.getWorlds().get(worldName);
+                WorldData worldData = WorldsConfig.worlds.get(worldName);
 
                 if (worldData == null) {
                     sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.RED + "Unknown world " + worldName + "! Are you sure you've typed it correctly?");
@@ -101,10 +106,8 @@ public class DeleteWorldCmd implements Subcommand {
                             loader.deleteWorld(worldName);
 
                             // Now let's delete it from the config file
-                            WorldsConfig config = ConfigManager.getWorldConfig();
-
-                            config.getWorlds().remove(worldName);
-                            config.save();
+                            WorldsConfig.worlds.remove(worldName);
+                            WorldsConfig.loadConfig(this.plugin);
 
                             sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.GREEN + "World " + ChatColor.YELLOW + worldName
                                     + ChatColor.GREEN + " deleted in " + (System.currentTimeMillis() - start) + "ms!");
