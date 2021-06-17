@@ -2,48 +2,35 @@ package com.grinderwolf.swm.plugin.config;
 
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 import static com.grinderwolf.swm.api.world.properties.SlimeProperties.*;
 
 @Data
-@ConfigSerializable
+@AllArgsConstructor
 public class WorldData {
 
-    @Setting("source")
     private String dataSource = "file";
 
-    @Setting("spawn")
     private String spawn = "0, 255, 0";
 
-    @Setting("difficulty")
     private String difficulty = "peaceful";
 
-    @Setting("allowMonsters")
     private boolean allowMonsters = true;
-    @Setting("allowAnimals")
     private boolean allowAnimals = true;
 
-    @Setting("dragonBattle")
     private boolean dragonBattle = false;
 
-    @Setting("pvp")
     private boolean pvp = true;
 
-    @Setting("environment")
     private String environment = "NORMAL";
-    @Setting("worldType")
     private String worldType = "DEFAULT";
-    @Setting("defaultBiome")
     private String defaultBiome = "minecraft:plains";
 
-    @Setting("loadOnStartup")
     private boolean loadOnStartup = true;
-    @Setting("readOnly")
     private boolean readOnly = false;
 
     public SlimePropertyMap toPropertyMap() {

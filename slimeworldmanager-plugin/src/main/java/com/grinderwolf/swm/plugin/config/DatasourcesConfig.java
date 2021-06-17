@@ -1,70 +1,71 @@
 package com.grinderwolf.swm.plugin.config;
 
+import io.github.portlek.configs.snakeyaml.bukkit.BukkitSnakeyaml;
+import io.github.portlek.transformer.TransformedObject;
+import io.github.portlek.transformer.TransformerPool;
+import io.github.portlek.transformer.annotations.CustomKey;
 import io.lettuce.core.RedisURI;
 import lombok.Getter;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Setting;
+import org.bukkit.plugin.Plugin;
 
-@Getter
-@ConfigSerializable
-public class DatasourcesConfig {
+import java.io.File;
 
-    @Setting("file") private FileConfig fileConfig = new FileConfig();
-    @Setting("mysql") private MysqlConfig mysqlConfig = new MysqlConfig();
-    @Setting("mongodb") private MongoDBConfig mongoDbConfig = new MongoDBConfig();
-    @Setting("redis") private RedisConfig redisConfig = new RedisConfig();
+public class DatasourcesConfig extends TransformedObject{
 
-    @Getter
-    @ConfigSerializable
-    public static class MysqlConfig {
-
-        @Setting("enabled") private boolean enabled = false;
-
-        @Setting("host") private String host = "127.0.0.1";
-        @Setting("port") private int port = 3306;
-
-        @Setting("username") private String username = "slimeworldmanager";
-        @Setting("password") private String password = "";
-
-        @Setting("database") private String database = "slimeworldmanager";
-
-        @Setting("usessl") private boolean usessl = false;
-
-        @Setting("sqlUrl") private String sqlUrl = "jdbc:mysql://{host}:{port}/{database}?autoReconnect=true&allowMultiQueries=true&useSSL={usessl}";
+    public static void loadConfig(final Plugin plugin) {
+        TransformerPool.create(new DatasourcesConfig())
+          .withFile(new File(plugin.getDataFolder(), "sources.yml"))
+          .withResolver(new BukkitSnakeyaml())
+          .initiate();
     }
 
-    @Getter
-    @ConfigSerializable
-    public static class MongoDBConfig {
+    @CustomKey("file") public static FileConfig fileConfig = new FileConfig();
+    @CustomKey("mysql") public static MysqlConfig mysqlConfig = new MysqlConfig();
+    @CustomKey("mongodb") public static MongoDBConfig mongoDbConfig = new MongoDBConfig();
+    @CustomKey("redis") public static RedisConfig redisConfig = new RedisConfig();
 
-        @Setting("enabled") private boolean enabled = false;
+    public static class MysqlConfig extends TransformedObject{
 
-        @Setting("host") private String host = "127.0.0.1";
-        @Setting("port") private int port = 27017;
+        public static boolean enabled = false;
 
-        @Setting("auth") private String authSource = "admin";
-        @Setting("username") private String username = "slimeworldmanager";
-        @Setting("password") private String password = "";
+       public static String host = "127.0.0.1";
+        public static int port = 3306;
 
-        @Setting("database") private String database = "slimeworldmanager";
-        @Setting("collection") private String collection = "worlds";
+      public static String username = "slimeworldmanager";
+         public static String password = "";
 
-        @Setting("uri") private String uri = "";
+        public static String database = "slimeworldmanager";
+
+        public static boolean usessl = false;
+
+         public static String sqlUrl = "jdbc:mysql://{host}:{port}/{database}?autoReconnect=true&allowMultiQueries=true&useSSL={usessl}";
     }
 
-    @Getter
-    @ConfigSerializable
-    public static class FileConfig {
+    public static class MongoDBConfig extends TransformedObject{
 
-        @Setting("path") private String path = "slime_worlds";
+        public static boolean enabled = false;
+public static String host = "127.0.0.1";
+      public static int port = 27017;
+
+        @CustomKey("auth") public static String authSource = "admin";
+     public static String username = "slimeworldmanager";
+       public static String password = "";
+
+        public static String database = "slimeworldmanager";
+      public static String collection = "worlds";
+
+      public static String uri = "";
+    }
+
+    public static class FileConfig extends TransformedObject {
+
+       public static String path = "slime_worlds";
 
     }
 
-  @Getter
-  @ConfigSerializable
-  public static class RedisConfig {
+  public static class RedisConfig extends TransformedObject{
 
-    @Setting("enabled") private boolean enabled = false;
-    @Setting("uri") private String uri = "redis://127.0.0.1/";
+    public static boolean enabled = false;
+  public static String uri = "redis://127.0.0.1/";
   }
 }

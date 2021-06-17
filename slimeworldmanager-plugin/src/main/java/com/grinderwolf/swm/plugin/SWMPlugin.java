@@ -14,9 +14,7 @@ import com.grinderwolf.swm.nms.v1_16_R1.v1_16_R1SlimeNMS;
 import com.grinderwolf.swm.nms.v1_16_R2.v1_16_R2SlimeNMS;
 import com.grinderwolf.swm.nms.v1_16_R3.v1_16_R3SlimeNMS;
 import com.grinderwolf.swm.plugin.commands.CommandManager;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
-import com.grinderwolf.swm.plugin.config.WorldData;
-import com.grinderwolf.swm.plugin.config.WorldsConfig;
+import com.grinderwolf.swm.plugin.config.*;
 import com.grinderwolf.swm.plugin.loaders.LoaderUtils;
 import com.grinderwolf.swm.plugin.log.Logging;
 import com.grinderwolf.swm.plugin.update.Updater;
@@ -60,13 +58,9 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
     public void onLoad() {
         isPaperMC = checkIsPaper();
 
-        try {
-            ConfigManager.initialize();
-        } catch (NullPointerException | IOException ex) {
-            Logging.error("Failed to load config files:");
-            ex.printStackTrace();
-            return;
-        }
+        MainConfig.loadConfig(this);
+        WorldsConfig.loadConfig(this);
+        DatasourcesConfig.loadConfig(this);
 
         LoaderUtils.registerLoaders();
 
@@ -127,7 +121,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
 
         getServer().getPluginManager().registerEvents(new WorldUnlocker(), this);
 
-        if (ConfigManager.getMainConfig().getUpdaterOptions().isEnabled()) {
+        if (MainConfig.UpdateOptions.enabled) {
             getServer().getPluginManager().registerEvents(new Updater(), this);
         }
 
@@ -158,9 +152,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
 
     private List<String> loadWorlds() {
         List<String> erroredWorlds = new ArrayList<>();
-        WorldsConfig config = ConfigManager.getWorldConfig();
-
-        for (Map.Entry<String, WorldData> entry : config.getWorlds().entrySet()) {
+        for (Map.Entry<String, WorldData> entry : WorldsConfig.worlds.entrySet()) {
             String worldName = entry.getKey();
             WorldData worldData = entry.getValue();
 
@@ -201,7 +193,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
             }
         }
 
-        config.save();
+        WorldsConfig.loadConfig(this);
         return erroredWorlds;
     }
 

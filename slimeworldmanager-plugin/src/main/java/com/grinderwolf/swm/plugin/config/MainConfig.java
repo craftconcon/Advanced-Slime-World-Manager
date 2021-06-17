@@ -1,37 +1,32 @@
 package com.grinderwolf.swm.plugin.config;
 
 import com.grinderwolf.swm.plugin.log.Logging;
+import io.github.portlek.configs.snakeyaml.bukkit.BukkitSnakeyaml;
+import io.github.portlek.transformer.TransformedObject;
+import io.github.portlek.transformer.TransformerPool;
+import io.github.portlek.transformer.annotations.CustomKey;
 import io.leangen.geantyref.TypeToken;
 import lombok.Data;
 import lombok.Getter;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Setting;
+import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.io.IOException;
 
-@Data
-@ConfigSerializable
-public class MainConfig {
-    @Setting("updater")
-    private UpdaterOptions updaterOptions = new UpdaterOptions();
+public class MainConfig extends TransformedObject {
 
-    @Getter
-    @ConfigSerializable
-    public static class UpdaterOptions {
+  public static UpdateOptions updater = new UpdateOptions();
+  public static final class UpdateOptions extends TransformedObject {
 
-        @Setting(value = "enabled")
-        private final boolean enabled = true;
+    public static boolean enabled = true;
 
-        @Setting(value = "onjoinmessage")
-        private final boolean messageEnabled = true;
-    }
-
-    public void save() {
-        try {
-            ConfigManager.getMainConfigLoader().save(ConfigManager.getMainConfigLoader().createNode().set(TypeToken.get(MainConfig.class), this));
-        } catch (IOException ex) {
-            Logging.error("Failed to save worlds config file:");
-            ex.printStackTrace();
-        }
+    @CustomKey(value = "onjoinmessage")
+    public static boolean messageEnabled = true;
+  }
+    public static void loadConfig(Plugin plugin) {
+      TransformerPool.create(new MainConfig())
+        .withFile(new File(plugin.getDataFolder(), "main.yml"))
+        .withResolver(new BukkitSnakeyaml())
+        .initiate();
     }
 }
