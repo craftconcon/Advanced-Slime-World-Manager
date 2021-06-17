@@ -7,7 +7,6 @@ import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import com.grinderwolf.swm.plugin.SWMPlugin;
 import com.grinderwolf.swm.plugin.commands.CommandManager;
-import com.grinderwolf.swm.plugin.config.ConfigManager;
 import com.grinderwolf.swm.plugin.config.WorldData;
 import com.grinderwolf.swm.plugin.config.WorldsConfig;
 import com.grinderwolf.swm.plugin.log.Logging;
@@ -19,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -26,6 +26,11 @@ import java.util.List;
 
 @Getter
 public class CreateWorldCmd implements Subcommand {
+private final Plugin plugin;
+
+    public CreateWorldCmd(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     private final String usage = "create <world> <data-source>";
     private final String description = "Create an empty world.";
@@ -50,9 +55,7 @@ public class CreateWorldCmd implements Subcommand {
                 return true;
             }
 
-            WorldsConfig config = ConfigManager.getWorldConfig();
-
-            if (config.getWorlds().containsKey(worldName)) {
+            if (WorldsConfig.worlds.containsKey(worldName)) {
                 sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.RED + "There is already a world called  " + worldName + " inside the worlds config file.");
 
                 return true;
@@ -92,8 +95,8 @@ public class CreateWorldCmd implements Subcommand {
                             location.getBlock().setType(Material.BEDROCK);
 
                             // Config
-                            config.getWorlds().put(worldName, worldData);
-                            config.save();
+                            WorldsConfig.worlds.put(worldName, worldData);
+                            WorldsConfig.loadConfig(this.plugin);
 
                             sender.sendMessage(Logging.COMMAND_PREFIX + ChatColor.GREEN + "World " + ChatColor.YELLOW + worldName
                                     + ChatColor.GREEN + " created in " + (System.currentTimeMillis() - start) + "ms!");

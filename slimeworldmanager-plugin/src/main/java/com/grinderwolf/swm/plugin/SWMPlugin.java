@@ -109,7 +109,7 @@ public class SWMPlugin extends JavaPlugin implements SlimePlugin {
             return;
         }
 
-        final CommandManager commandManager = new CommandManager();
+        final CommandManager commandManager = new CommandManager(this);
         final PluginCommand swmCommand = getCommand("swm");
         swmCommand.setExecutor(commandManager);
 

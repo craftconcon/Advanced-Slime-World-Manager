@@ -4,6 +4,7 @@ import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 
@@ -11,6 +12,7 @@ import static com.grinderwolf.swm.api.world.properties.SlimeProperties.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class WorldData {
 
     private String dataSource = "file";
