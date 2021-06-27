@@ -1,18 +1,17 @@
 package com.grinderwolf.swm.plugin.config;
 
 import com.grinderwolf.swm.plugin.log.Logging;
-import io.github.portlek.configs.jacksonyaml.bukkit.BukkitJacksonYaml;
-import io.github.portlek.configs.snakeyaml.bukkit.BukkitSnakeyaml;
-import io.github.portlek.transformer.ObjectSerializer;
-import io.github.portlek.transformer.TransformedData;
-import io.github.portlek.transformer.TransformedObject;
-import io.github.portlek.transformer.TransformerPool;
-import io.github.portlek.transformer.declarations.GenericDeclaration;
 import io.leangen.geantyref.TypeToken;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tr.com.infumia.infumialib.paper.transformer.resolvers.BukkitSnakeyaml;
+import tr.com.infumia.infumialib.transformer.ObjectSerializer;
+import tr.com.infumia.infumialib.transformer.TransformedData;
+import tr.com.infumia.infumialib.transformer.TransformedObject;
+import tr.com.infumia.infumialib.transformer.TransformerPool;
+import tr.com.infumia.infumialib.transformer.declarations.GenericDeclaration;
 
 import java.io.File;
 import java.io.IOException;

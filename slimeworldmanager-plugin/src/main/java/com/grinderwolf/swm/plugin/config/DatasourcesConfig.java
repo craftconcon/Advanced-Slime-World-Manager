@@ -1,16 +1,16 @@
 package com.grinderwolf.swm.plugin.config;
 
-import io.github.portlek.configs.snakeyaml.bukkit.BukkitSnakeyaml;
-import io.github.portlek.transformer.TransformedObject;
-import io.github.portlek.transformer.TransformerPool;
-import io.github.portlek.transformer.annotations.CustomKey;
 import io.lettuce.core.RedisURI;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
+import tr.com.infumia.infumialib.paper.transformer.resolvers.BukkitSnakeyaml;
+import tr.com.infumia.infumialib.transformer.TransformedObject;
+import tr.com.infumia.infumialib.transformer.TransformerPool;
+import tr.com.infumia.infumialib.transformer.annotations.CustomKey;
 
 import java.io.File;
 
-public class DatasourcesConfig extends TransformedObject{
+public class DatasourcesConfig extends TransformedObject {
 
     public static void loadConfig(final Plugin plugin) {
         TransformerPool.create(new DatasourcesConfig())
